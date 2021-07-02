@@ -1,0 +1,3 @@
+[submodule "1.7.10_src"]
+	path = 1.7.10_src
+	url = https://github.com/GTNewHorizons/ExtraCells2.git

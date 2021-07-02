@@ -1,12 +1,1 @@
-/*
-!/.gitignore
-!/src
-!/gradle
-!/gradlew
-!/gradlew.bat
-!/README.md
-!/License.txt
-!/build.gradle
-!/build.bat
-!/build.sh
-!/build.properties
+/.idea
