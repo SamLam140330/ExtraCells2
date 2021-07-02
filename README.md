@@ -4,7 +4,8 @@
 [![AvailableVersion](http://cf.way2muchnoise.eu/versions/485225.svg)](https://www.curseforge.com/minecraft/mc-mods/extra-cells-2-samlam140330s-fork/files)
 
 ### Why this forked version appear?
-Since the original mod has been marked as abandoned. That's mean it cannot be searched by CurseForge. As a Modpack player and developer, it is not a good news. Therefore, this forked version has appeared.  
+Since the original mod has been marked as abandoned. That's mean it cannot be searched by CurseForge. As a Modpack player and developer, it is not a good news. Therefore, this forked version has appeared.
+
 **Note that the version of 1.7.10 is maintained by GTNewHorizons. Special thanks to them!**
 
 ### What is the difference between the original version?
