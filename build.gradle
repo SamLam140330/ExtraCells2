@@ -1,0 +1,123 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "Forge"
+            url = "https://gregtech.overminddl1.com/"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+        maven {
+            name = "Jitpack"
+            url = "https://jitpack.io"
+        }
+    }
+    dependencies {
+        classpath 'com.github.GTNH2:ForgeGradle:FG_1.2-SNAPSHOT'
+    }
+}
+
+apply plugin: 'scala'
+apply plugin: 'forge'
+apply plugin: 'idea'
+
+sourceCompatibility = targetCompatibility = "1.8"
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.8"
+}
+
+ext.buildProps = file "build.properties"
+buildProps.withReader {
+    def prop = new Properties()
+    prop.load(it)
+    ext.config = new ConfigSlurper().parse prop
+}
+
+version = "${config.version.minecraft}-${config.version.mod.major}.${config.version.mod.minor}.${config.version.mod.revis}"//b" + getBuildNumber()
+group= "extracells"
+archivesBaseName = "ExtraCells"
+
+minecraft {
+    version = "${config.version.minecraft}-${config.version.forge}-${config.version.minecraft}"
+    runDir = "../MinecraftDebug/run_client"
+}
+
+repositories {
+    ivy {
+        name "BuildCraft"
+        artifactPattern "https://www.mod-buildcraft.com/releases/BuildCraft/[revision]/[module]-[revision]-[classifier].[ext]"
+    }
+    maven {
+        name "AE2, Mekanism, Thaumcraft, Thaumcraft Energistics"
+        url "https://www.cursemaven.com/"
+    }
+    maven {
+        name "IGW"
+        url "https://maven.k-4u.nl/"
+    }
+    maven {
+        name "Code Chicken"
+        url "https://chickenbones.net/maven/"
+    }
+    maven {
+        name "Open Computer"
+        url "https://maven.cil.li/"
+    }
+    maven {
+        name "Waila"
+        url "https://mobiusstrip.eu/maven"
+    }
+}
+
+dependencies {
+    compile name : "buildcraft", version: "${config.version.bc}", classifier: "dev", ext: 'jar'
+    compile "igwmod:IGW-Mod-${config.version.minecraft}:${config.version.igw}:userdev"
+    compile "codechicken:CodeChickenCore:${config.version.minecraft}-${config.version.ccc}:dev"
+    compile "codechicken:CodeChickenLib:${config.version.minecraft}-${config.version.ccl}:dev"
+    compile "codechicken:NotEnoughItems:${config.version.minecraft}-${config.version.nei}:dev"
+    compile "li.cil.oc:OpenComputers:${config.version.oc}:dev"
+    compile "curse.maven:mekanism-268560:${config.version.mekanism}"
+    compile "curse.maven:thaumcraft-223628:${config.version.tc}"
+    compile "curse.maven:thaumic-energistics-223666:${config.version.tce}"
+    compile "curse.maven:wireless-crafting-terminal-244559:${config.version.wct}"
+    compile ("curse.maven:applied-energistics-2-223794:${config.version.ae}") {
+        transitive = false
+    }
+    compile ("mcp.mobius.waila:Waila:${config.version.waila}"){
+        transitive = false
+    }
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.lang'
+        include '**/*.info'
+        include '**/*.properties'
+        expand 'version': project.version, 'mcversion': project.minecraft.version
+    }
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.lang'
+        include '**/*.info'
+        include '**/*.properties'
+        expand 'version': "${config.version.mod.major}.${config.version.mod.minor}.${config.version.mod.revis}", 'mcversion': project.minecraft.version
+    }
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    from sourceSets.main.scala
+    from sourceSets.main.java
+    appendix = 'deobf'
+}
+
+artifacts {
+    archives deobfJar
+}
+
+idea {
+    module {
+        outputDir = file('build/classes/main')
+    }
+}
